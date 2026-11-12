@@ -6,6 +6,7 @@ import {
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { cores } from '../styles/theme';
 import type { StackParamList } from '../navigation/types';
+import { entrar } from '../services/usuarios';
 
 type Props = NativeStackScreenProps<StackParamList, 'Login'>;
 
@@ -15,9 +16,11 @@ export default function LoginScreen({ navigation }: Props) {
 
   function handleLogin() {
     // TODO: integrar com a API (POST /auth/login)
+    const usuario = entrar(email);
+
     navigation.replace('Principal', {
       screen: 'Perfil',
-      params: { nome: 'Maria Silva', email },
+      params: { nome: usuario.nome, email: usuario.email },
     });
   }
 

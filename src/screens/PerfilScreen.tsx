@@ -4,6 +4,7 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { cores } from '../styles/theme';
 import type { StackParamList, TabParamList } from '../navigation/types';
+import { sair } from '../services/usuarios';
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<TabParamList, 'Perfil'>,
@@ -14,7 +15,8 @@ export default function PerfilScreen({ navigation, route }: Props) {
   const nome = route.params?.nome ?? 'Visitante';
   const email = route.params?.email ?? '-';
 
-  function sair() {
+  function handleSair() {
+    sair();
     navigation.getParent()?.reset({
       index: 0,
       routes: [{ name: 'Login' }],
@@ -26,7 +28,7 @@ export default function PerfilScreen({ navigation, route }: Props) {
       <Text style={styles.nome}>{nome}</Text>
       <Text style={styles.email}>{email}</Text>
 
-      <TouchableOpacity style={styles.botao} onPress={sair}>
+      <TouchableOpacity style={styles.botao} onPress={handleSair}>
         <Text style={styles.botaoTexto}>SAIR</Text>
       </TouchableOpacity>
     </View>

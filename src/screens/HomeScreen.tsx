@@ -4,6 +4,7 @@ import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { cores } from '../styles/theme';
 import type { StackParamList, TabParamList } from '../navigation/types';
+import { getUsuarioLogado } from '../services/usuarios';
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<TabParamList, 'Início'>,
@@ -12,16 +13,27 @@ type Props = CompositeScreenProps<
 
 const atalhos = ['Pagar', 'Transferir', 'Extrato', 'Cartões', 'Recarga', 'Ajuda'];
 
+// "Maria Silva" -> "MS"
+function iniciais(nome: string) {
+  const partes = nome.trim().split(/\s+/);
+  const primeira = partes[0]?.charAt(0) ?? '';
+  const ultima = partes.length > 1 ? partes[partes.length - 1].charAt(0) : '';
+  return (primeira + ultima).toUpperCase();
+}
+
 export default function HomeScreen({ navigation }: Props) {
+  const nome = getUsuarioLogado()?.nome ?? 'Visitante';
+  const primeiroNome = nome.split(' ')[0];
+
   return (
     <View style={styles.tela}>
       <View style={styles.cabecalho}>
         <View>
-          <Text style={styles.ola}>Olá, Maria!</Text>
+          <Text style={styles.ola}>Olá, {primeiroNome}!</Text>
           <Text style={styles.subtitulo}>Bom dia</Text>
         </View>
         <TouchableOpacity style={styles.avatar} onPress={() => navigation.replace('Login')}>
-          <Text style={styles.avatarTexto}>MS</Text>
+          <Text style={styles.avatarTexto}>{iniciais(nome)}</Text>
         </TouchableOpacity>
       </View>
 

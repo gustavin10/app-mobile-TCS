@@ -5,6 +5,7 @@ import {
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { cores } from '../styles/theme';
 import type { StackParamList } from '../navigation/types';
+import { cadastrar } from '../services/usuarios';
 
 type Props = NativeStackScreenProps<StackParamList, 'Registro'>;
 
@@ -29,6 +30,7 @@ export default function RegisterScreen({ navigation }: Props) {
     }
 
     // TODO: integrar com a API (POST /users)
+    cadastrar(form.nome, form.email);
     Alert.alert('Conta criada!');
     navigation.goBack();
   }
