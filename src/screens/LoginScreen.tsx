@@ -1,27 +1,38 @@
 import { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  KeyboardAvoidingView, Platform,
+  KeyboardAvoidingView, Platform, ActivityIndicator,
 } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
 import { cores } from '../styles/theme';
+import { avisar } from '../utils/avisar';
 import type { StackParamList } from '../navigation/types';
-import { entrar } from '../services/usuarios';
+import { login } from '../services/api';
+import { iniciarSessao } from '../services/sessao';
 
 type Props = NativeStackScreenProps<StackParamList, 'Login'>;
 
 export default function LoginScreen({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [carregando, setCarregando] = useState(false);
 
-  function handleLogin() {
-    // TODO: integrar com a API (POST /auth/login)
-    const usuario = entrar(email);
-
-    navigation.replace('Principal', {
-      screen: 'Perfil',
-      params: { nome: usuario.nome, email: usuario.email },
-    });
+  async function handleLogin() {
+    if (!email.trim() || !senha) {
+      avisar('Informe e-mail e senha');
+      return;
+    }
+    setCarregando(true);
+    try {
+      const { access_token, usuario } = await login(email, senha);
+      iniciarSessao(access_token, usuario);
+      navigation.replace('Principal');
+    } catch (e) {
+      avisar('Não foi possível entrar', (e as Error).message);
+    } finally {
+      setCarregando(false);
+    }
   }
 
   return (
@@ -31,9 +42,9 @@ export default function LoginScreen({ navigation }: Props) {
     >
       <View style={styles.cabecalho}>
         <View style={styles.logo}>
-          <Text style={styles.logoTexto}>A</Text>
+          <Ionicons name="school" size={40} color={cores.branco} />
         </View>
-        <Text style={styles.titulo}>Bem-vindo!</Text>
+        <Text style={styles.titulo}>GM Cursos</Text>
         <Text style={styles.subtitulo}>Faça login para continuar</Text>
       </View>
 
@@ -54,10 +65,10 @@ export default function LoginScreen({ navigation }: Props) {
           onChangeText={setSenha}
         />
 
-        <Text style={styles.esqueci}>Esqueci a senha</Text>
-
-        <TouchableOpacity style={styles.botao} onPress={handleLogin}>
-          <Text style={styles.botaoTexto}>ENTRAR</Text>
+        <TouchableOpacity style={styles.botao} onPress={handleLogin} disabled={carregando}>
+          {carregando
+            ? <ActivityIndicator color={cores.branco} />
+            : <Text style={styles.botaoTexto}>ENTRAR</Text>}
         </TouchableOpacity>
       </View>
 
@@ -91,7 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  logoTexto: { color: cores.branco, fontSize: 36, fontWeight: 'bold' },
   titulo: { fontSize: 26, fontWeight: 'bold', color: cores.texto },
   subtitulo: { color: cores.cinza },
   formulario: {
@@ -104,10 +114,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#dfe6e9',
     backgroundColor: cores.branco,
-  },
-  esqueci: {
-    alignSelf: 'flex-end',
-    color: cores.primaria,
   },
   botao: {
     height: 50,

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import {
-  ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert,
+  ScrollView, View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator,
 } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { cores } from '../styles/theme';
+import { avisar } from '../utils/avisar';
 import type { StackParamList } from '../navigation/types';
-import { cadastrar } from '../services/usuarios';
+import { registrar } from '../services/api';
 
 type Props = NativeStackScreenProps<StackParamList, 'Registro'>;
 
@@ -18,21 +19,28 @@ type Formulario = {
 
 export default function RegisterScreen({ navigation }: Props) {
   const [form, setForm] = useState<Formulario>({ nome: '', email: '', senha: '', confirmar: '' });
+  const [carregando, setCarregando] = useState(false);
 
   function alterar(campo: keyof Formulario, valor: string) {
     setForm({ ...form, [campo]: valor });
   }
 
-  function handleRegistrar() {
+  async function handleRegistrar() {
     if (form.senha !== form.confirmar) {
-      Alert.alert('As senhas não conferem');
+      avisar('As senhas não conferem');
       return;
     }
 
-    // TODO: integrar com a API (POST /users)
-    cadastrar(form.nome, form.email);
-    Alert.alert('Conta criada!');
-    navigation.goBack();
+    setCarregando(true);
+    try {
+      await registrar(form.nome, form.email, form.senha);
+      avisar('Conta criada!', 'Agora é só entrar com seu e-mail e senha.');
+      navigation.goBack();
+    } catch (e) {
+      avisar('Não foi possível cadastrar', (e as Error).message);
+    } finally {
+      setCarregando(false);
+    }
   }
 
   return (
@@ -77,8 +85,10 @@ export default function RegisterScreen({ navigation }: Props) {
         />
       </View>
 
-      <TouchableOpacity style={styles.botao} onPress={handleRegistrar}>
-        <Text style={styles.botaoTexto}>CADASTRAR</Text>
+      <TouchableOpacity style={styles.botao} onPress={handleRegistrar} disabled={carregando}>
+        {carregando
+          ? <ActivityIndicator color={cores.branco} />
+          : <Text style={styles.botaoTexto}>CADASTRAR</Text>}
       </TouchableOpacity>
 
       <View style={styles.rodape}>

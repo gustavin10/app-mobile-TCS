@@ -1,65 +1,63 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { cores } from '../styles/theme';
 import type { StackParamList, TabParamList } from '../navigation/types';
-import { getUsuarioLogado } from '../services/usuarios';
+import { getUsuario } from '../services/sessao';
+import { listarCursos, listarTrilhas } from '../services/api';
+import { useCarregar } from '../hooks/useCarregar';
+import { CursoCard, Estado } from '../components/ui';
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<TabParamList, 'Início'>,
   NativeStackScreenProps<StackParamList>
 >;
 
-const atalhos = ['Pagar', 'Transferir', 'Extrato', 'Cartões', 'Recarga', 'Ajuda'];
-
-// "Maria Silva" -> "MS"
-function iniciais(nome: string) {
-  const partes = nome.trim().split(/\s+/);
-  const primeira = partes[0]?.charAt(0) ?? '';
-  const ultima = partes.length > 1 ? partes[partes.length - 1].charAt(0) : '';
-  return (primeira + ultima).toUpperCase();
-}
-
+// Catálogo: trilhas e todos os cursos
 export default function HomeScreen({ navigation }: Props) {
-  const nome = getUsuarioLogado()?.nome ?? 'Visitante';
-  const primeiroNome = nome.split(' ')[0];
+  const primeiroNome = getUsuario().nomeCompleto.split(' ')[0];
+  const { dados, erro, carregando, recarregar } = useCarregar(async () => {
+    const [trilhas, cursos] = await Promise.all([listarTrilhas(), listarCursos()]);
+    return { trilhas, cursos };
+  });
 
   return (
     <View style={styles.tela}>
       <View style={styles.cabecalho}>
-        <View>
-          <Text style={styles.ola}>Olá, {primeiroNome}!</Text>
-          <Text style={styles.subtitulo}>Bom dia</Text>
-        </View>
-        <TouchableOpacity style={styles.avatar} onPress={() => navigation.replace('Login')}>
-          <Text style={styles.avatarTexto}>{iniciais(nome)}</Text>
-        </TouchableOpacity>
+        <Text style={styles.ola}>Olá, {primeiroNome}!</Text>
+        <Text style={styles.subtitulo}>O que vamos aprender hoje?</Text>
       </View>
 
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.conteudo}>
-        <View style={styles.linhaCards}>
-          <View style={[styles.card, { backgroundColor: cores.primaria }]}>
-            <Text style={styles.cardValor}>12</Text>
-            <Text style={styles.cardRotulo}>Pedidos</Text>
-          </View>
-          <View style={[styles.card, { backgroundColor: '#00b894' }]}>
-            <Text style={styles.cardValor}>R$ 350</Text>
-            <Text style={styles.cardRotulo}>Saldo</Text>
-          </View>
-        </View>
+      <Estado pronto={!!dados} erro={erro} onTentar={recarregar}>
+        {() => (
+          <ScrollView
+            contentContainerStyle={styles.conteudo}
+            refreshControl={<RefreshControl refreshing={carregando} onRefresh={recarregar} />}
+          >
+            <Text style={styles.secao}>Trilhas</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12 }}>
+              {dados!.trilhas.map((trilha) => (
+                <TouchableOpacity
+                  key={trilha.id}
+                  style={styles.trilha}
+                  onPress={() => navigation.navigate('Trilha', { id: trilha.id, titulo: trilha.titulo })}
+                >
+                  <Ionicons name="git-network-outline" size={26} color={cores.branco} />
+                  <Text style={styles.trilhaTitulo}>{trilha.titulo}</Text>
+                  <Text style={styles.trilhaInfo}>{trilha.cursos.length} cursos</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
 
-        <Text style={styles.secao}>Atalhos</Text>
-
-        <View style={styles.grade}>
-          {atalhos.map((item) => (
-            <TouchableOpacity key={item} style={styles.atalho}>
-              <View style={styles.icone} />
-              <Text>{item}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+            <Text style={styles.secao}>Todos os cursos</Text>
+            {dados!.cursos.map((curso) => (
+              <CursoCard key={curso.id} curso={curso} onPress={() => navigation.navigate('Curso', { id: curso.id })} />
+            ))}
+          </ScrollView>
+        )}
+      </Estado>
     </View>
   );
 }
@@ -67,49 +65,22 @@ export default function HomeScreen({ navigation }: Props) {
 const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
   cabecalho: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 60,
     paddingBottom: 16,
     backgroundColor: cores.branco,
   },
   ola: { fontSize: 22, fontWeight: 'bold', color: cores.texto },
-  subtitulo: { color: cores.cinza },
-  avatar: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: cores.primaria,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avatarTexto: { color: cores.branco, fontWeight: 'bold' },
-  conteudo: { padding: 20, gap: 16 },
-  linhaCards: { flexDirection: 'row', gap: 12 },
-  card: {
-    flex: 1,
+  subtitulo: { color: '#636e72' },
+  conteudo: { padding: 20, gap: 12 },
+  secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto, marginTop: 4 },
+  trilha: {
+    width: 200,
     padding: 16,
+    gap: 6,
     borderRadius: 12,
+    backgroundColor: '#0984e3',
   },
-  cardValor: { color: cores.branco, fontSize: 22, fontWeight: 'bold' },
-  cardRotulo: { color: cores.branco },
-  secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto },
-  grade: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    rowGap: 12,
-  },
-  atalho: {
-    width: '31%',
-    aspectRatio: 1,
-    borderRadius: 12,
-    backgroundColor: cores.branco,
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 8,
-  },
-  icone: { width: 32, height: 32, borderRadius: 8, backgroundColor: '#dfe6e9' },
+  trilhaTitulo: { color: cores.branco, fontWeight: 'bold', fontSize: 16 },
+  trilhaInfo: { color: '#dfe6e9' },
 });
