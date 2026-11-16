@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { CompositeScreenProps } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { cores } from '../styles/theme';
+import { cabecalhoVermelho, cores } from '../styles/theme';
 import type { StackParamList, TabParamList } from '../navigation/types';
 import { getUsuario } from '../services/sessao';
 import { listarCursos, listarTrilhas } from '../services/api';
@@ -26,7 +26,8 @@ export default function HomeScreen({ navigation }: Props) {
   return (
     <View style={styles.tela}>
       <View style={styles.cabecalho}>
-        <Text style={styles.ola}>Olá, {primeiroNome}!</Text>
+        <Text style={styles.marca}>GM CURSOS</Text>
+        <Text style={styles.ola}>Olá, {primeiroNome}! 👋</Text>
         <Text style={styles.subtitulo}>O que vamos aprender hoje?</Text>
       </View>
 
@@ -64,23 +65,19 @@ export default function HomeScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
-  cabecalho: {
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 16,
-    backgroundColor: cores.branco,
-  },
-  ola: { fontSize: 22, fontWeight: 'bold', color: cores.texto },
-  subtitulo: { color: '#636e72' },
+  cabecalho: cabecalhoVermelho,
+  marca: { color: cores.branco, opacity: 0.8, fontWeight: 'bold', letterSpacing: 2, fontSize: 12, marginBottom: 6 },
+  ola: { fontSize: 24, fontWeight: 'bold', color: cores.branco },
+  subtitulo: { color: cores.branco, opacity: 0.85, marginTop: 2 },
   conteudo: { padding: 20, gap: 12 },
   secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto, marginTop: 4 },
   trilha: {
     width: 200,
     padding: 16,
     gap: 6,
-    borderRadius: 12,
-    backgroundColor: '#0984e3',
+    borderRadius: 14,
+    backgroundColor: cores.primariaEscura,
   },
   trilhaTitulo: { color: cores.branco, fontWeight: 'bold', fontSize: 16 },
-  trilhaInfo: { color: '#dfe6e9' },
+  trilhaInfo: { color: cores.branco, opacity: 0.8 },
 });

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { cores } from '../styles/theme';
+import { cartao, cores } from '../styles/theme';
 import type { Curso } from '../types';
 
 // Mostra "carregando" ou a mensagem de erro; senão renderiza o conteúdo
@@ -72,32 +72,25 @@ const styles = StyleSheet.create({
   centro: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24, gap: 12 },
   erro: { textAlign: 'center', color: cores.texto },
   botao: {
-    height: 50,
+    height: 52,
     paddingHorizontal: 24,
-    borderRadius: 10,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
   botaoTexto: { color: cores.branco, fontWeight: 'bold', fontSize: 16 },
-  card: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 12,
-    borderRadius: 12,
-    backgroundColor: cores.branco,
-  },
+  card: { ...cartao, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
   capa: {
     width: 56,
     height: 56,
-    borderRadius: 10,
+    borderRadius: 12,
     backgroundColor: cores.primaria,
     justifyContent: 'center',
     alignItems: 'center',
   },
   categoria: { fontSize: 12, color: cores.primaria, fontWeight: '600' },
   titulo: { fontSize: 16, fontWeight: 'bold', color: cores.texto },
-  info: { fontSize: 12, color: '#636e72' },
+  info: { fontSize: 12, color: cores.textoSuave },
   vazio: { alignItems: 'center', gap: 8, padding: 40 },
-  vazioTexto: { color: '#636e72', textAlign: 'center' },
+  vazioTexto: { color: cores.textoSuave, textAlign: 'center' },
 });

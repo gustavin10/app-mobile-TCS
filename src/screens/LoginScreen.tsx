@@ -40,92 +40,104 @@ export default function LoginScreen({ navigation }: Props) {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <View style={styles.cabecalho}>
+      <View style={styles.topo}>
         <View style={styles.logo}>
-          <Ionicons name="school" size={40} color={cores.branco} />
+          <Ionicons name="school" size={44} color={cores.primaria} />
         </View>
         <Text style={styles.titulo}>GM Cursos</Text>
-        <Text style={styles.subtitulo}>Faça login para continuar</Text>
+        <Text style={styles.subtitulo}>Aprenda no seu ritmo</Text>
       </View>
 
-      <View style={styles.formulario}>
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          secureTextEntry
-          value={senha}
-          onChangeText={setSenha}
-        />
+      <View style={styles.painel}>
+        <Text style={styles.painelTitulo}>Entrar</Text>
+        <Text style={styles.painelSubtitulo}>Use seu e-mail e senha</Text>
+
+        <View style={styles.campo}>
+          <Ionicons name="mail-outline" size={20} color={cores.textoSuave} />
+          <TextInput
+            style={styles.input}
+            placeholder="E-mail"
+            placeholderTextColor={cores.cinza}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            value={email}
+            onChangeText={setEmail}
+          />
+        </View>
+        <View style={styles.campo}>
+          <Ionicons name="lock-closed-outline" size={20} color={cores.textoSuave} />
+          <TextInput
+            style={styles.input}
+            placeholder="Senha"
+            placeholderTextColor={cores.cinza}
+            secureTextEntry
+            value={senha}
+            onChangeText={setSenha}
+          />
+        </View>
 
         <TouchableOpacity style={styles.botao} onPress={handleLogin} disabled={carregando}>
           {carregando
             ? <ActivityIndicator color={cores.branco} />
             : <Text style={styles.botaoTexto}>ENTRAR</Text>}
         </TouchableOpacity>
-      </View>
 
-      <View style={styles.rodape}>
-        <Text>Não tem conta? </Text>
-        <Text style={styles.link} onPress={() => navigation.navigate('Registro')}>
-          Cadastre-se
-        </Text>
+        <View style={styles.rodape}>
+          <Text style={{ color: cores.textoSuave }}>Não tem conta? </Text>
+          <Text style={styles.link} onPress={() => navigation.navigate('Registro')}>
+            Cadastre-se
+          </Text>
+        </View>
       </View>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 24,
-    gap: 32,
-    backgroundColor: cores.fundo,
-  },
-  cabecalho: {
-    alignItems: 'center',
-    gap: 8,
-  },
+  container: { flex: 1, backgroundColor: cores.primaria },
+  topo: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: 6, paddingTop: 40 },
   logo: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: cores.primaria,
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    backgroundColor: cores.branco,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 8,
   },
-  titulo: { fontSize: 26, fontWeight: 'bold', color: cores.texto },
-  subtitulo: { color: cores.cinza },
-  formulario: {
+  titulo: { fontSize: 30, fontWeight: 'bold', color: cores.branco },
+  subtitulo: { color: cores.branco, opacity: 0.85 },
+  painel: {
+    backgroundColor: cores.branco,
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    padding: 24,
+    paddingBottom: 40,
     gap: 12,
   },
-  input: {
-    height: 50,
-    paddingHorizontal: 16,
-    borderRadius: 10,
+  painelTitulo: { fontSize: 24, fontWeight: 'bold', color: cores.texto },
+  painelSubtitulo: { color: cores.textoSuave, marginBottom: 8 },
+  campo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    height: 52,
+    paddingHorizontal: 14,
+    borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#dfe6e9',
-    backgroundColor: cores.branco,
+    borderColor: cores.borda,
+    backgroundColor: '#FAFAFA',
   },
+  input: { flex: 1, height: '100%', color: cores.texto },
   botao: {
-    height: 50,
-    borderRadius: 10,
+    height: 52,
+    marginTop: 4,
+    borderRadius: 12,
     backgroundColor: cores.primaria,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  botaoTexto: { color: cores.branco, fontWeight: 'bold', fontSize: 16 },
-  rodape: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
+  botaoTexto: { color: cores.branco, fontWeight: 'bold', fontSize: 16, letterSpacing: 1 },
+  rodape: { flexDirection: 'row', justifyContent: 'center', marginTop: 4 },
   link: { color: cores.primaria, fontWeight: 'bold' },
 });

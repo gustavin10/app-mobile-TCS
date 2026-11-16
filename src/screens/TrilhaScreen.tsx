@@ -43,7 +43,7 @@ export default function TrilhaScreen({ route, navigation }: Props) {
 const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
   conteudo: { padding: 20, gap: 12 },
-  categoria: { color: '#0984e3', fontWeight: '600' },
+  categoria: { color: cores.primaria, fontWeight: 'bold' },
   descricao: { fontSize: 15, color: cores.texto },
   secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto, marginTop: 8 },
   linha: { flexDirection: 'row', alignItems: 'center', gap: 10 },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     color: cores.branco,
     fontWeight: 'bold',
-    backgroundColor: '#0984e3',
+    backgroundColor: cores.primariaEscura,
     overflow: 'hidden',
   },
 });

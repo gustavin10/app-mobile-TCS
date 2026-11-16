@@ -79,6 +79,8 @@ function Abas() {
         headerShown: false,
         tabBarActiveTintColor: cores.primaria,
         tabBarInactiveTintColor: cores.cinza,
+        tabBarStyle: { backgroundColor: cores.branco, borderTopColor: cores.borda },
+        tabBarLabelStyle: { fontWeight: '600' },
         tabBarIcon: ({ focused, color, size }) => (
           <Ionicons
             name={focused ? icones[route.name].ativo : icones[route.name].inativo}

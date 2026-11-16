@@ -6,7 +6,7 @@ import type { StackParamList } from '../navigation/types';
 import { buscarCurso, matricular } from '../services/api';
 import { useCarregar } from '../hooks/useCarregar';
 import { Botao, Estado } from '../components/ui';
-import { cores } from '../styles/theme';
+import { cartao, cores } from '../styles/theme';
 import { data } from '../utils/formatar';
 import { avisar } from '../utils/avisar';
 
@@ -41,7 +41,7 @@ export default function CursoScreen({ route, navigation }: Props) {
     if (curso!.matriculado) {
       return (
         <View style={styles.matriculado}>
-          <Ionicons name="checkmark-circle" size={20} color="#00b894" />
+          <Ionicons name="checkmark-circle" size={20} color={cores.sucesso} />
           <Text style={styles.matriculadoTexto}>Você está matriculado. Bons estudos!</Text>
         </View>
       );
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
   categoria: { color: cores.primaria, fontWeight: '600' },
   titulo: { fontSize: 24, fontWeight: 'bold', color: cores.texto },
   descricao: { fontSize: 15, color: cores.texto },
-  info: { color: '#636e72' },
-  caixa: { padding: 16, gap: 12, borderRadius: 12, backgroundColor: cores.branco },
+  info: { color: cores.textoSuave },
+  caixa: { ...cartao, padding: 16, gap: 12 },
   caixaTexto: { color: cores.texto },
   matriculado: {
     flexDirection: 'row',
@@ -132,12 +132,12 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 14,
     borderRadius: 12,
-    backgroundColor: '#e8f8f3',
+    backgroundColor: cores.sucessoClaro,
   },
-  matriculadoTexto: { color: '#00866b', fontWeight: '600' },
+  matriculadoTexto: { color: cores.sucesso, fontWeight: '600' },
   secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto },
-  modulo: { borderRadius: 12, backgroundColor: cores.branco, overflow: 'hidden' },
-  moduloTitulo: { padding: 14, fontWeight: 'bold', color: cores.texto, backgroundColor: '#ecebfd' },
+  modulo: { ...cartao, overflow: 'hidden' },
+  moduloTitulo: { padding: 14, fontWeight: 'bold', color: cores.primariaEscura, backgroundColor: cores.primariaClara },
   aula: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderTopWidth: 1,
-    borderTopColor: '#f1f2f6',
+    borderTopColor: cores.borda,
   },
   aulaTitulo: { flex: 1, color: cores.texto },
-  aulaDuracao: { color: '#636e72', fontSize: 12 },
+  aulaDuracao: { color: cores.textoSuave, fontSize: 12 },
 });

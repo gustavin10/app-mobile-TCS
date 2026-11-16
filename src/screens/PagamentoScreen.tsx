@@ -6,7 +6,7 @@ import type { StackParamList } from '../navigation/types';
 import { listarPlanos, matricular } from '../services/api';
 import { useCarregar } from '../hooks/useCarregar';
 import { Botao, Estado } from '../components/ui';
-import { cores } from '../styles/theme';
+import { cartao, cores } from '../styles/theme';
 import { moeda } from '../utils/formatar';
 import { avisar } from '../utils/avisar';
 
@@ -113,7 +113,7 @@ export default function PagamentoScreen({ route, navigation }: Props) {
             titulo={plano ? `Pagar ${moeda(plano.preco)}` : 'Escolha um plano'}
             onPress={confirmar}
             carregando={carregando}
-            cor="#00b894"
+            cor={cores.sucesso}
           />
         </ScrollView>
       )}
@@ -124,31 +124,22 @@ export default function PagamentoScreen({ route, navigation }: Props) {
 const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
   conteudo: { padding: 20, gap: 12 },
-  resumo: { padding: 16, gap: 4, borderRadius: 12, backgroundColor: cores.branco },
-  rotulo: { color: '#636e72' },
+  resumo: { ...cartao, padding: 16, gap: 4, backgroundColor: cores.primariaClara, borderColor: '#F7C5CE' },
+  rotulo: { color: cores.textoSuave },
   titulo: { fontSize: 18, fontWeight: 'bold', color: cores.texto },
   secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto, marginTop: 8 },
-  opcao: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    backgroundColor: cores.branco,
-  },
+  opcao: { ...cartao, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderWidth: 2 },
   opcaoAtiva: { borderColor: cores.primaria },
   opcaoTitulo: { color: cores.texto, fontSize: 15, fontWeight: '600' },
-  opcaoDescricao: { color: '#636e72', fontSize: 12 },
-  preco: { fontWeight: 'bold', color: '#00b894', fontSize: 16 },
+  opcaoDescricao: { color: cores.textoSuave, fontSize: 12 },
+  preco: { fontWeight: 'bold', color: cores.sucesso, fontSize: 16 },
   input: {
     height: 50,
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#dfe6e9',
+    borderColor: cores.borda,
     backgroundColor: cores.branco,
   },
-  dica: { color: '#636e72' },
+  dica: { color: cores.textoSuave },
 });

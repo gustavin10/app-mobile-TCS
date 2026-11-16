@@ -6,7 +6,7 @@ import type { StackParamList, TabParamList } from '../navigation/types';
 import { listarMeusCursos } from '../services/api';
 import { useCarregar } from '../hooks/useCarregar';
 import { CursoCard, Estado, Vazio } from '../components/ui';
-import { cores } from '../styles/theme';
+import { cabecalhoVermelho, cores } from '../styles/theme';
 import { data } from '../utils/formatar';
 
 type Props = CompositeScreenProps<
@@ -45,15 +45,7 @@ export default function MeusCursosScreen({ navigation }: Props) {
 
 const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
-  titulo: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: cores.texto,
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 16,
-    backgroundColor: cores.branco,
-  },
+  titulo: { ...cabecalhoVermelho, fontSize: 24, fontWeight: 'bold', color: cores.branco },
   lista: { padding: 20, gap: 12 },
-  data: { fontSize: 12, color: '#636e72', marginLeft: 4 },
+  data: { fontSize: 12, color: cores.textoSuave, marginLeft: 4 },
 });

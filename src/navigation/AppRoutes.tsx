@@ -17,7 +17,10 @@ export default function AppRoutes() {
       initialRouteName="Login"
       screenOptions={{
         headerStyle: { backgroundColor: cores.primaria },
-        headerTintColor: '#fff',
+        headerTintColor: cores.branco,
+        headerTitleStyle: { fontWeight: 'bold' },
+        headerShadowVisible: false,
+        contentStyle: { backgroundColor: cores.fundo },
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />

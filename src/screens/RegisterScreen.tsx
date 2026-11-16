@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#dfe6e9',
+    borderColor: cores.borda,
     backgroundColor: cores.branco,
   },
   linha: {

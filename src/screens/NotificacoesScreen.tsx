@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { listarNotificacoes, marcarComoLida } from '../services/api';
 import { useCarregar } from '../hooks/useCarregar';
 import { Estado, Vazio } from '../components/ui';
-import { cores } from '../styles/theme';
+import { cabecalhoVermelho, cartao, cores } from '../styles/theme';
 import { data } from '../utils/formatar';
 
 // Notificações geradas pelo serviço que consome o Kafka
@@ -46,26 +46,12 @@ export default function NotificacoesScreen() {
 
 const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
-  titulo: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: cores.texto,
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 16,
-    backgroundColor: cores.branco,
-  },
+  titulo: { ...cabecalhoVermelho, fontSize: 24, fontWeight: 'bold', color: cores.branco },
   lista: { padding: 20, gap: 12 },
-  card: {
-    flexDirection: 'row',
-    gap: 12,
-    padding: 14,
-    borderRadius: 12,
-    backgroundColor: cores.branco,
-  },
-  naoLida: { backgroundColor: '#ecebfd' },
+  card: { ...cartao, flexDirection: 'row', gap: 12, padding: 14 },
+  naoLida: { backgroundColor: cores.primariaClara, borderColor: '#F7C5CE' },
   cardTitulo: { fontWeight: 'bold', color: cores.texto, fontSize: 15 },
   cardTexto: { color: cores.texto },
-  cardData: { color: '#636e72', fontSize: 12 },
+  cardData: { color: cores.textoSuave, fontSize: 12 },
   ponto: { width: 10, height: 10, borderRadius: 5, backgroundColor: cores.primaria, marginTop: 4 },
 });
