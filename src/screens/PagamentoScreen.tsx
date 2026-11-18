@@ -72,7 +72,7 @@ export default function PagamentoScreen({ route, navigation }: Props) {
               style={[styles.opcao, idPlano === p.id && styles.opcaoAtiva]}
               onPress={() => setIdPlano(p.id)}
             >
-              <View style={{ flex: 1 }}>
+              <View style={styles.opcaoTextos}>
                 <Text style={styles.opcaoTitulo}>{p.nome}</Text>
                 <Text style={styles.opcaoDescricao}>{p.descricao}</Text>
               </View>
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto, marginTop: 8 },
   opcao: { ...cartao, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 16, borderWidth: 2 },
   opcaoAtiva: { borderColor: cores.primaria },
+  opcaoTextos: { flex: 1 }, // textos ocupam o espaço restante; o preço fica na ponta
   opcaoTitulo: { color: cores.texto, fontSize: 15, fontWeight: '600' },
   opcaoDescricao: { color: cores.textoSuave, fontSize: 12 },
   preco: { fontWeight: 'bold', color: cores.sucesso, fontSize: 16 },

@@ -76,6 +76,14 @@ export default function LoginScreen({ navigation }: Props) {
           />
         </View>
 
+        {/* alignSelf: só este item vai para a direita */}
+        <Text
+          style={styles.esqueci}
+          onPress={() => avisar('Esqueceu a senha?', 'Procure o administrador da plataforma para redefinir sua senha.')}
+        >
+          Esqueci a senha
+        </Text>
+
         <TouchableOpacity style={styles.botao} onPress={handleLogin} disabled={carregando}>
           {carregando
             ? <ActivityIndicator color={cores.branco} />
@@ -83,7 +91,7 @@ export default function LoginScreen({ navigation }: Props) {
         </TouchableOpacity>
 
         <View style={styles.rodape}>
-          <Text style={{ color: cores.textoSuave }}>Não tem conta? </Text>
+          <Text style={styles.rodapeTexto}>Não tem conta? </Text>
           <Text style={styles.link} onPress={() => navigation.navigate('Registro')}>
             Cadastre-se
           </Text>
@@ -138,6 +146,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   botaoTexto: { color: cores.branco, fontWeight: 'bold', fontSize: 16, letterSpacing: 1 },
+  esqueci: {
+    alignSelf: 'flex-end', // sobrescreve o stretch: vai para a direita
+    color: cores.primaria,
+    fontWeight: '600',
+  },
   rodape: { flexDirection: 'row', justifyContent: 'center', marginTop: 4 },
+  rodapeTexto: { color: cores.textoSuave },
   link: { color: cores.primaria, fontWeight: 'bold' },
 });

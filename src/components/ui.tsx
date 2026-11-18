@@ -44,13 +44,21 @@ export function Botao({
 export function CursoCard({ curso, onPress }: { curso: Curso; onPress: () => void }) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
+      {/* A capa é o pai de referência do selo (position: 'absolute') */}
       <View style={styles.capa}>
         <Ionicons name="school" size={28} color={cores.branco} />
+        {/* Selo no canto da capa: aparece nos cursos em que o aluno está matriculado */}
+        {!!curso.dataMatricula && (
+          <View style={[styles.selo, !!curso.dataConclusao && styles.seloConcluido]}>
+            <Ionicons name={curso.dataConclusao ? 'trophy' : 'checkmark'} size={12} color={cores.branco} />
+          </View>
+        )}
       </View>
-      <View style={{ flex: 1, gap: 2 }}>
-        <Text style={styles.categoria}>{curso.categoria} · {curso.nivel}</Text>
-        <Text style={styles.titulo}>{curso.titulo}</Text>
-        <Text style={styles.info}>
+      {/* flexShrink: o texto quebra/encolhe em vez de empurrar a seta para fora */}
+      <View style={styles.textos}>
+        <Text style={styles.categoria} numberOfLines={1}>{curso.categoria} · {curso.nivel}</Text>
+        <Text style={styles.titulo} numberOfLines={2}>{curso.titulo}</Text>
+        <Text style={styles.info} numberOfLines={1}>
           {curso.instrutor} · {curso.totalAulas} aulas · {curso.totalHoras}h
         </Text>
       </View>
@@ -82,12 +90,28 @@ const styles = StyleSheet.create({
   card: { ...cartao, flexDirection: 'row', alignItems: 'center', gap: 12, padding: 12 },
   capa: {
     width: 56,
-    height: 56,
+    aspectRatio: 1,           // altura igual à largura: um quadrado
     borderRadius: 12,
     backgroundColor: cores.primaria,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  selo: {
+    position: 'absolute',     // sai do fluxo e fica sobre a capa
+    top: -6,
+    right: -6,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    borderWidth: 2,
+    borderColor: cores.branco,
+    backgroundColor: cores.primariaEscura,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  seloConcluido: { backgroundColor: cores.sucesso },
+  textos: { flex: 1, flexShrink: 1, gap: 2 },
   categoria: { fontSize: 12, color: cores.primaria, fontWeight: '600' },
   titulo: { fontSize: 16, fontWeight: 'bold', color: cores.texto },
   info: { fontSize: 12, color: cores.textoSuave },

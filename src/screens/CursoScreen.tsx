@@ -50,7 +50,7 @@ export default function CursoScreen({ route, navigation }: Props) {
       return (
         <View style={styles.caixa}>
           <Text style={styles.caixaTexto}>
-            Incluso no seu plano <Text style={{ fontWeight: 'bold' }}>{curso!.assinatura.plano}</Text>
+            Incluso no seu plano <Text style={styles.negrito}>{curso!.assinatura.plano}</Text>
             {' '}(válido até {data(curso!.assinatura.dataFim)})
           </Text>
           <Botao titulo="Matricular-se" onPress={matricularComAssinatura} carregando={matriculando} />
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
   info: { color: cores.textoSuave },
   caixa: { ...cartao, padding: 16, gap: 12 },
   caixaTexto: { color: cores.texto },
+  negrito: { fontWeight: 'bold' }, // Text aninhado: herda o resto do estilo do pai
   matriculado: {
     flexDirection: 'row',
     alignItems: 'center',

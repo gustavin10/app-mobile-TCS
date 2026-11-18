@@ -31,7 +31,7 @@ export default function MeusCursosScreen({ navigation }: Props) {
               <Vazio icone="book-outline" texto="Você ainda não está matriculado em nenhum curso. Explore o catálogo na aba Início!" />
             }
             renderItem={({ item }) => (
-              <View style={{ gap: 4 }}>
+              <View style={styles.item}>
                 <CursoCard curso={item} onPress={() => navigation.navigate('Curso', { id: item.id })} />
                 <Text style={styles.data}>Matriculado em {data(item.dataMatricula!)}</Text>
               </View>
@@ -47,5 +47,6 @@ const styles = StyleSheet.create({
   tela: { flex: 1, backgroundColor: cores.fundo },
   titulo: { ...cabecalhoVermelho, fontSize: 24, fontWeight: 'bold', color: cores.branco },
   lista: { padding: 20, gap: 12 },
+  item: { gap: 4 },
   data: { fontSize: 12, color: cores.textoSuave, marginLeft: 4 },
 });

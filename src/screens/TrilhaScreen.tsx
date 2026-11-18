@@ -28,7 +28,7 @@ export default function TrilhaScreen({ route, navigation }: Props) {
             {trilha!.cursos.map((curso, i) => (
               <View key={curso.id} style={styles.linha}>
                 <Text style={styles.numero}>{i + 1}</Text>
-                <View style={{ flex: 1 }}>
+                <View style={styles.cartaoCurso}>
                   <CursoCard curso={curso} onPress={() => navigation.navigate('Curso', { id: curso.id })} />
                 </View>
               </View>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
   descricao: { fontSize: 15, color: cores.texto },
   secao: { fontSize: 18, fontWeight: 'bold', color: cores.texto, marginTop: 8 },
   linha: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  cartaoCurso: { flex: 1 }, // o card ocupa o espaço que sobra ao lado do número
   numero: {
     width: 28,
     height: 28,

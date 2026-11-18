@@ -29,7 +29,7 @@ export default function NotificacoesScreen() {
             renderItem={({ item }) => (
               <TouchableOpacity style={[styles.card, !item.lida && styles.naoLida]} onPress={() => abrir(item.id)}>
                 <Ionicons name="mail-unread-outline" size={24} color={cores.primaria} />
-                <View style={{ flex: 1, gap: 2 }}>
+                <View style={styles.cardTextos}>
                   <Text style={styles.cardTitulo}>{item.titulo}</Text>
                   <Text style={styles.cardTexto}>{item.mensagem}</Text>
                   <Text style={styles.cardData}>{data(item.criadaEm)}</Text>
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   lista: { padding: 20, gap: 12 },
   card: { ...cartao, flexDirection: 'row', gap: 12, padding: 14 },
   naoLida: { backgroundColor: cores.primariaClara, borderColor: '#F7C5CE' },
+  cardTextos: { flex: 1, gap: 2 },
   cardTitulo: { fontWeight: 'bold', color: cores.texto, fontSize: 15 },
   cardTexto: { color: cores.texto },
   cardData: { color: cores.textoSuave, fontSize: 12 },
